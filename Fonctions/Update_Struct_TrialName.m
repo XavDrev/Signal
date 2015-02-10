@@ -10,8 +10,10 @@ function [varargout] = Update_Struct_TrialName(varargin)
 
 for i = 1 : nargin
     eval(['struct_in = varargin{' num2str(i) '};'])
-    if isfield(struct_in.Trial(1),'TrialName')
+    if isfield(struct_in.Trial(1),'TrialName') && ~iscell(struct_in.Trial(1).TrialName)
         list_struct = arrayfun(@(i) upper(struct_in.Trial(i).TrialName),1:length(struct_in.Trial),'uni',0);
+    elseif isfield(struct_in.Trial(1),'TrialName') && iscell(struct_in.Trial(1).TrialName)
+        list_struct = arrayfun(@(i) upper(struct_in.Trial(i).TrialName{1}),1:length(struct_in.Trial),'uni',0);
     else
         champs = fieldnames(struct_in.Trial(1));
         ind = find(arrayfun(@(i) isa(struct_in.Trial(1).(champs{i}),'Signal'),1:length(champs)),1);
