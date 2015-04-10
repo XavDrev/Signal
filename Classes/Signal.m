@@ -55,8 +55,7 @@ classdef Signal
                     error('Nombre impair d''arguments supplementaires')
                 end
             end
-        end
-        
+        end 
         % low-pass filtering
         function lpFilteredSignal = LowPassFilter(thisObj, cutoff, order)
             lpFilteredSignal = thisObj;
@@ -112,6 +111,22 @@ classdef Signal
             TKEOSignal.Data(:,2:end-1) = thisObj.Data(:,2:end-1).*thisObj.Data(:,2:end-1) - thisObj.Data(:,1:end-2).*thisObj.Data(:,3:end);
             TKEOSignal.Data(:,1) = NaN;
             TKEOSignal.Data(:,end) = NaN;
+        end
+        % detrending signals (Tarvainen et al, 2002)
+        function DetrendSignal = Detrending(thisObj)
+            DetrendSignal = thisObj;
+            T = size(thisObj.Data,2);
+            lambda = 10;
+            I = speye(T);
+            D2 = spdiags(ones(T-2,1)*[1 -2 1],0:2,T-2,T);
+            for j = 1 : size(thisObj.Data,1)
+                DetrendSignal.Data(j,:) = thisObj.Data(j,:)*(I - inv(I+lambda^2*(D2'*D2)))';
+            end
+        end
+        % plot signals
+        function plot(thisObj)
+            figure;
+            plot(thisObj.Data');
         end
     end
 end

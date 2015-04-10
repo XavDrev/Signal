@@ -22,6 +22,7 @@ classdef Signal_EMG < Signal
             newSignal = newSignal.HighPassFilter(20, 6);
             newSignal = newSignal.TKEO;
             newSignal = newSignal.LowPassFilter(50, 6);
+            newSignal.Data = abs(newSignal.Data);
             newSignal.TrialName = newSignal.TrialName;
             newSignal.TrialNum = newSignal.TrialNum;
             newSignal.Description = {'TKEO processing'};

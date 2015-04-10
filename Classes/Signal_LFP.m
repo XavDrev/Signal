@@ -6,7 +6,7 @@ classdef Signal_LFP < Signal
     methods
         % constructor
         function sLFP = Signal_LFP(data, fech, varargin)
-            sLFP@Signal(data, fech, varargin)
+            sLFP@Signal(data, fech, varargin{:})
         end
         
         % data preProcessing
